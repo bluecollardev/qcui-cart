@@ -1,0 +1,15 @@
+{
+  "name": "quickcommerce-ui-cart",
+  "version": "1.0.0",
+  "description": "React component library for building shopping carts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "quickcommerce-ui-cart"
+  },
+  "author": "Lucas Lopatka",
+  "license": "MIT"
+}

@@ -8,6 +8,10 @@ export default class ExampleComponent extends Component {
     text: PropTypes.string
   }
 
+  static defaultProps = {
+    text: 'My Component'
+  }
+
   render() {
     const {
       text

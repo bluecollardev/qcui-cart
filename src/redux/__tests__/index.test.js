@@ -1,4 +1,4 @@
-describe('Test Store', () => {
+describe('Redux Tests', () => {
   test('is truthy', () => {
   })
 })

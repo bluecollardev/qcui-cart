@@ -1,0 +1,29 @@
+# The docker image specifies the base docker container we’re going to use. In our case, it will be a container pre-installed with Node.js version 8. All the commands that follow will be run in an instance of this container image.
+# The checkout step checks out the source code to the working directory.
+# CircleCI supports caching dependencies so we’re taking advantage of this to cache our npm dependencies.
+# The restore_cache step restores any cache that is available from a previous build.
+# In the run step, we use npm ci to install our project dependencies.
+# The save_cache step is where we save our cache of the npm dependencies, specifically the /home/circleci/.npm folder, which is where the npm cache is stored when we use npm ci to install the dependencies.
+# We create a cache that uses a checksum of the contents of the package-lock.json file, so if this file changes, a new cache will be created.
+# It’s also worth noting that caches are immutable in CircleCI, meaning that once a cache is created, there’s no changing it afterwards. To change a cache, you need to create a new one entirely. The v1 part of our cache key helps us to invalidate the cache. So in this case, if we needed to manually force the cache to be re-created, we could change that to v2.
+# The final command is the actual test command which runs our tests.
+version: 2
+jobs:
+  build:
+    working_directory: ~/qcui-cart
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          key: npm-cache-v1-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm ci
+      - save_cache:
+          key: npm-cache-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - /home/circleci/.npm
+      - run:
+          name: Run Tests
+          command: npm test

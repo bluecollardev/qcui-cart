@@ -4,7 +4,7 @@ import React from 'react'
 import Adapter from 'enzyme-adapter-react-16'
 import { shallow, configure, mount } from 'enzyme'
 
-import ExampleComponent from '../index'
+import { ExampleComponent } from '../index'
 
 configure({ adapter: new Adapter() })
 describe('ExampleComponent', () => {

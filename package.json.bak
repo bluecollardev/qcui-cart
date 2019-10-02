@@ -2,7 +2,7 @@
   "name": "quickcommerce-ui-cart",
   "version": "1.0.0",
   "description": "React component library for building shopping carts.",
-  "main": "index.js",
+  "main": "actions.js",
   "scripts": {
     "test": "npm run test"
   },

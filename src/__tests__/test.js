@@ -1,10 +1,10 @@
-import 'jsdom-global/register'
+// import 'jsdom-global/register'
 
-import React from 'react';
+import React from 'react'
 import Adapter from 'enzyme-adapter-react-16'
 import { shallow, configure, mount } from 'enzyme'
 
-import ExampleComponent from './'
+import ExampleComponent from '../index'
 
 configure({ adapter: new Adapter() })
 describe('ExampleComponent', () => {

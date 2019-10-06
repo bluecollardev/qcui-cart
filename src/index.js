@@ -1,5 +1,15 @@
 import ExampleComponent from './ExampleComponent'
-import * as FluxCart from './flux'
+import {
+  CartActions as FluxCartActions,
+  CartActionTypes as FluxCartActionTypes,
+  CartStore as FluxCartStore,
+  CartContext as FluxCartContext
+} from './flux'
 
 export { ExampleComponent }
-export { FluxCart }
+export {
+  FluxCartActions,
+  FluxCartActionTypes,
+  FluxCartStore,
+  FluxCartContext
+}

@@ -8,7 +8,7 @@ import {
 } from './flux'
 
 export {
-  ExampleComponent
+  ExampleComponent,
   FluxCartActions,
   FluxCartActionTypes,
   FluxCartStore,

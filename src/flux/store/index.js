@@ -13,7 +13,7 @@ let RESET_EVENT_NAME = 'cart-reset'
 let CLEARED_EVENT_NAME = 'cart-cleared'
 
 let itemKey = 'product' // TODO: Make this configurable using mappings?
-let idKey = 'vin' // TODO: Make this configurable using mappings?
+let idKey = 'id' // TODO: Make this configurable using mappings?
 let optionIdKey = 'id' // TODO: Make this configurable using mappings?
 let optionsKey = 'options' // TODO: Make this configurable using mappings?
 let nextKey = 'nextKey' // TODO: Make this configurable using mappings?

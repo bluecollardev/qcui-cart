@@ -7,8 +7,8 @@ import {
   createCartContextManager as createFluxCartContextManager
 } from './flux'
 
-export { ExampleComponent }
 export {
+  ExampleComponent
   FluxCartActions,
   FluxCartActionTypes,
   FluxCartStore,

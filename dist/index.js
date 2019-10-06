@@ -1805,10 +1805,16 @@ var CartContext = function CartContext(ComposedComponent) {
   return CartContext;
 };
 
+
+
+var index = /*#__PURE__*/Object.freeze({
+  Actions: CartActions,
+  ActionTypes: ActionTypes,
+  Context: CartContext,
+  Store: CartStore,
+  createContextManager: createCartContextManager
+});
+
 exports.ExampleComponent = ExampleComponent;
-exports.FluxCartActions = CartActions;
-exports.FluxCartActionTypes = ActionTypes;
-exports.FluxCartStore = CartStore;
-exports.FluxCartContext = CartContext;
-exports.createFluxCartContextManager = createCartContextManager;
+exports.FluxCart = index;
 //# sourceMappingURL=index.js.map

@@ -1,17 +1,4 @@
 import ExampleComponent from './ExampleComponent'
-import {
-  CartActions as FluxCartActions,
-  CartActionTypes as FluxCartActionTypes,
-  CartStore as FluxCartStore,
-  CartContext as FluxCartContext,
-  createCartContextManager as createFluxCartContextManager
-} from './flux'
+import * as FluxCart from './flux'
 
-export {
-  ExampleComponent,
-  FluxCartActions,
-  FluxCartActionTypes,
-  FluxCartStore,
-  FluxCartContext,
-  createFluxCartContextManager
-}
+export { ExampleComponent, FluxCart }

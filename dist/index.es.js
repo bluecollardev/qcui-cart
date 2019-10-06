@@ -8486,8 +8486,9 @@ var Cart = (_dec = Y(function (deps) {
   cart: object
 }, _temp$3)) || _class$3) || _class$3);
 
+// TODO: This requires a DndProvider component... need to document that
 
-var Cart$1 = DropTarget('sprite', cartTarget, collect)(Cart);
+var DndCart = DropTarget('sprite', cartTarget, collect)(Cart);
 
 var ActionTypes$1 = {
   CART_INITIALIZE: 'cart-initialize',
@@ -10120,7 +10121,8 @@ var CartContext = function CartContext(ComposedComponent) {
 
 
 var index$1 = /*#__PURE__*/Object.freeze({
-  Cart: Cart$1,
+  Cart: Cart,
+  DndCart: DndCart,
   Actions: CartActions,
   ActionTypes: ActionTypes$1,
   Context: CartContext,

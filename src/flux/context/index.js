@@ -2,16 +2,22 @@ import assign from 'object-assign'
 import React, { Component } from 'react'
 import * as PropTypes from 'prop-types'
 import { Dispatcher } from 'flux'
-import { inject, observer } from 'mobx-react'
 
 import * as FormHelper from '../../utils/QCForm'
 
-import createCartActions from '../actions'
+import { CartActions } from '../actions'
 import { CartStore } from '../store'
 
-let createCartContextManager = (componentClass, exposedMethods) => {
+/**
+ * This is an Observable manager for context. Context is broken in React 16.2.
+ * We will upgrade the components to use the new React Context in the near future.
+ * @param componentClass
+ * @param exposedMethods
+ * @returns {{getSubscribers: (function(): Array), notifySubscribers: notifySubscribers, subscribe: (function(*=): Function), getCartContextValue: (function(): *)}}
+ */
+const createCartContextManager = (componentClass, exposedMethods) => {
   let dispatcher = new Dispatcher()
-  let actions = createCartActions(dispatcher)
+  let actions = CartActions(dispatcher)
   let store = new CartStore(dispatcher)
 
   let cartContextValue = assign({
@@ -23,11 +29,11 @@ let createCartContextManager = (componentClass, exposedMethods) => {
 
   let subscribers = []
 
-  let getCartContextValue = () => {
+  const getCartContextValue = () => {
     return cartContextValue
   }
 
-  let subscribe = (subscriber) => {
+  const subscribe = (subscriber) => {
     subscribers.push(subscriber)
 
     return () => {
@@ -37,11 +43,11 @@ let createCartContextManager = (componentClass, exposedMethods) => {
     }
   }
 
-  let getSubscribers = () => {
+  const getSubscribers = () => {
     return subscribers
   }
 
-  let notifySubscribers = (state) => {
+  const notifySubscribers = (state) => {
     // console.log('NOTIFY SUBSCRIBERS')
     cartContextValue = state
     subscribers.forEach((callback) => {
@@ -60,34 +66,12 @@ let createCartContextManager = (componentClass, exposedMethods) => {
 let INSTANCE_COUNTER = 0
 
 /**
- * This higher-order component wraps an existing component, decorating it with methods needed to interact
- * with the shopping cart.
+ * This higher-order component wraps an existing component, and decorates it with
+ * methods needed to interact with the core shopping cart.
  */
-export default (ComposedComponent) => {
+const CartContext = (ComposedComponent) => {
   let displayName = ComposedComponent.displayName || ComposedComponent.name || 'Component'
 
-  @inject(deps => ({
-    // actions: deps.actions,
-    authService: deps.authService,
-    customerService: deps.customerService,
-    checkoutService: deps.checkoutService,
-    settingService: deps.authService,
-    loginStore: deps.loginStore,
-    userStore: deps.userStore,
-    customerStore: deps.customerStore,
-    catalogStore: deps.catalogStore,
-    cartStore: deps.cartStore,
-    checkoutStore: deps.checkoutStore,
-    starMicronicsStore: deps.starMicronicsStore,
-    productStore: deps.productStore,
-    settingStore: deps.settingStore,
-    mappings: deps.mappings, // Mappings correlate directly to stores
-    // For instance, if the store dep is named 'cartStore', we would expect its mappings to be under the object key 'cartStore'
-    translations: deps.translations, // i8ln transations
-    roles: deps.roles, // App level roles, general authenticated user (not customer!)
-    userRoles: deps.userRoles, // Shortcut or implement via HoC?
-    user: deps.user // Shortcut or implement via HoC?
-  })) @observer
   class CartContext extends Component {
     static contextTypes = {
       cartContextManager: PropTypes.object,
@@ -97,6 +81,18 @@ export default (ComposedComponent) => {
     static childContextTypes = {
       cartContextManager: PropTypes.object,
       cart: PropTypes.object
+    }
+
+    static propTypes = {
+      addToCartMode: PropTypes.string,
+      mappings: PropTypes.object, // TODO: Provide shape
+      showChargeModal: PropTypes.func
+    }
+
+    static defaultProps = {
+      addToCartMode: 'instant',
+      mappings: {} ,// TODO: Flesh this out
+      showChargeModal: () => {}
     }
 
     constructor(props, context) {
@@ -181,7 +177,7 @@ export default (ComposedComponent) => {
       }
     }
 
-    componentDidMount() {// CartContext.componentDidMount
+    componentDidMount() {
       // this.context.actions.init(this.props.items, this.context.store.getSelection())
       this.cartContextManager.subscribe((data) => {
         // console.log('update CART with data')
@@ -295,12 +291,12 @@ export default (ComposedComponent) => {
 
         if (item === null) throw new Error('Attempted to add non-item to cart!')
 
-        itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
+        // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
         // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
 
         this.cartContextManager.getCartContextValue().actions.addItem(itemId, quantity, item)
       } else {
-        alert('Please enter the desired quantity.')
+        console.log('Please enter the desired quantity.')
       }
 
       this.forceUpdate()
@@ -374,7 +370,7 @@ export default (ComposedComponent) => {
       this.addToCart(e) // Add to cart
 
       // Close quantity keypad popup modal
-      this.setState({chooseQuantity: false})
+      this.setState({ chooseQuantity: false })
     }
 
     addToCartClicked(e, item, quantity) {
@@ -387,8 +383,11 @@ export default (ComposedComponent) => {
       switch (this.props.addToCartMode) {
         case 'instant':
           // Temporarily store the selected product's information
-          itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
+          // TODO: How do I avoid using mappings?
+          // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
           // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+          // TODO: Fix me!
+          itemId = 1
           quantity = (!isNaN(quantity)) ? quantity : 1
 
           this.addToCart(e, item, quantity) // Add the item to the cart
@@ -396,7 +395,7 @@ export default (ComposedComponent) => {
           break
         case 'popup':
           // Temporarily store the selected product's information (yes, that's right, zero quantity)
-          itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
+          // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
           // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
 
           // And open the Keypad / Quantity selection modal
@@ -434,7 +433,7 @@ export default (ComposedComponent) => {
           itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
 
           // And open the Keypad / Quantity selection modal
-          this.setState({chooseQuantity: true})
+          this.setState({ chooseQuantity: true })
 
           break
         case 'normal':
@@ -459,7 +458,7 @@ export default (ComposedComponent) => {
     }
 
     doCheckout() {
-      this.props.showChargeModal(function () {
+      this.props.showChargeModal(() => {
         window.location.href = '#/checkout'
       })
     }
@@ -480,7 +479,7 @@ export default (ComposedComponent) => {
 
       return (
         <ComposedComponent
-          ref={(instance) => this.wrappedInstance = instance}
+          ref={(instance) => { this.wrappedInstance = instance }}
           {...props}
         />
       )
@@ -489,3 +488,5 @@ export default (ComposedComponent) => {
 
   return CartContext
 }
+
+export { CartContext, createCartContextManager }

@@ -1,4 +1,4 @@
-export const ActionTypes = {
+const ActionTypes = {
   CART_INITIALIZE: 'cart-initialize',
   CART_ADD_ITEM: 'cart-add-item',
   CART_REMOVE_ITEM: 'cart-remove-item',
@@ -9,7 +9,7 @@ export const ActionTypes = {
   CART_REVERT: 'cart-revert'
 }
 
-export default (dispatcher) => {
+const CartActions = (dispatcher) => {
   return {
     /**
      * Initialize a cart, optionally providing default items and selected items.
@@ -103,3 +103,5 @@ export default (dispatcher) => {
     }
   }
 }
+
+export { CartActions, ActionTypes }

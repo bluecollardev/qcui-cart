@@ -186,4 +186,8 @@ class Cart extends Component {
   }
 }
 
-export default DropTarget('sprite', cartTarget, collect)(Cart)
+// TODO: This requires a DndProvider component... need to document that
+const DndCart = DropTarget('sprite', cartTarget, collect)(Cart)
+
+export default Cart
+export { Cart, DndCart }

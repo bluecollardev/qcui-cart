@@ -9728,7 +9728,8 @@ var CartContext = function CartContext(ComposedComponent) {
       _this.state = {
         blockUi: false,
         chooseQuantity: false,
-        settings: {}
+        settings: {},
+        itemKey: 'id'
       };
 
       var classMethods = {
@@ -9913,7 +9914,7 @@ var CartContext = function CartContext(ComposedComponent) {
           if (item === null) throw new Error('Attempted to add non-item to cart!');
 
           // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
-          // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+          itemId = getMappedValue(itemMappings.ITEM_ID, item);
 
           this.cartContextManager.getCartContextValue().actions.addItem(itemId, quantity, item);
         } else {
@@ -9998,12 +9999,19 @@ var CartContext = function CartContext(ComposedComponent) {
       key: 'addToCartClicked',
       value: function addToCartClicked(e, item, quantity) {
         var itemMappings = this.props.mappings.inventoryItem;
+        var itemId = null;
 
         e.preventDefault();
         e.stopPropagation();
 
         switch (this.props.addToCartMode) {
           case 'instant':
+            // Temporarily store the selected product's information
+            // TODO: How do I avoid using mappings?
+            // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
+            itemId = getMappedValue(itemMappings.ITEM_ID, item);
+            // TODO: Fix me!
+            itemId = 1;
             quantity = !isNaN(quantity) ? quantity : 1;
 
             this.addToCart(e, item, quantity); // Add the item to the cart
@@ -10012,7 +10020,7 @@ var CartContext = function CartContext(ComposedComponent) {
           case 'popup':
             // Temporarily store the selected product's information (yes, that's right, zero quantity)
             // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
-            // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+            itemId = getMappedValue(itemMappings.ITEM_ID, item);
 
             // And open the Keypad / Quantity selection modal
             this.setState({ chooseQuantity: true });

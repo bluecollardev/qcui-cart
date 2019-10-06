@@ -91,7 +91,7 @@ const CartContext = (ComposedComponent) => {
 
     static defaultProps = {
       addToCartMode: 'instant',
-      mappings: {} ,// TODO: Flesh this out
+      mappings: {}, // TODO: Flesh this out
       showChargeModal: () => {}
     }
 
@@ -127,7 +127,8 @@ const CartContext = (ComposedComponent) => {
       this.state = {
         blockUi: false,
         chooseQuantity: false,
-        settings: {}
+        settings: {},
+        itemKey: 'id'
       }
 
       let classMethods = {
@@ -292,7 +293,7 @@ const CartContext = (ComposedComponent) => {
         if (item === null) throw new Error('Attempted to add non-item to cart!')
 
         // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
-        // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+        itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
 
         this.cartContextManager.getCartContextValue().actions.addItem(itemId, quantity, item)
       } else {
@@ -385,7 +386,7 @@ const CartContext = (ComposedComponent) => {
           // Temporarily store the selected product's information
           // TODO: How do I avoid using mappings?
           // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
-          // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+          itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
           // TODO: Fix me!
           itemId = 1
           quantity = (!isNaN(quantity)) ? quantity : 1
@@ -396,7 +397,7 @@ const CartContext = (ComposedComponent) => {
         case 'popup':
           // Temporarily store the selected product's information (yes, that's right, zero quantity)
           // itemId = FormHelper.getMappedValue(itemMappings.VIN, item)
-          // itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
+          itemId = FormHelper.getMappedValue(itemMappings.ITEM_ID, item)
 
           // And open the Keypad / Quantity selection modal
           this.setState({ chooseQuantity: true })

@@ -8389,7 +8389,8 @@ var Cart = (_dec = Y(function (deps) {
           position = _props.position,
           isOver = _props.isOver,
           canDrop = _props.canDrop,
-          connectDropTarget = _props.connectDropTarget;
+          connectDropTarget = _props.connectDropTarget,
+          useDnd = _props.useDnd;
 
 
       var Container = this.props.containerComponent;
@@ -8399,9 +8400,10 @@ var Cart = (_dec = Y(function (deps) {
       var cartContextValue = this.context.cartContextManager.getCartContextValue();
       var actions = cartContextValue.actions;
       var store = cartContextValue.store;
+      var template = null;
 
       if (store !== null && store.isEmpty()) {
-        return connectDropTarget(React__default.createElement(
+        template = React__default.createElement(
           'div',
           { className: 'dnd-target-wrapper' },
           React__default.createElement(
@@ -8419,9 +8421,9 @@ var Cart = (_dec = Y(function (deps) {
               this.props.cartEmptyMessage
             )
           )
-        ));
+        );
       } else {
-        return connectDropTarget(React__default.createElement(
+        template = React__default.createElement(
           'div',
           { className: 'dnd-target-wrapper' },
           React__default.createElement(Container, {
@@ -8433,8 +8435,10 @@ var Cart = (_dec = Y(function (deps) {
             setItemQty: this.updateQuantity,
             context: context
           })
-        ));
+        );
       }
+
+      return typeof connectDropTarget === 'function' ? connectDropTarget(template) : template;
     }
   }]);
   return Cart;
@@ -8450,7 +8454,6 @@ var Cart = (_dec = Y(function (deps) {
   iterator: func,
   tableClassName: string,
   cartEmptyMessage: node
-
 }, _class2.defaultProps = {
   items: {},
   selection: [],

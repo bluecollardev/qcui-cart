@@ -44,7 +44,6 @@ class Cart extends Component {
     iterator: PropTypes.func,
     tableClassName: PropTypes.string,
     cartEmptyMessage: PropTypes.node
-
   }
 
   static defaultProps = {
@@ -65,7 +64,7 @@ class Cart extends Component {
 
   static contextTypes = {
     cartContextManager: PropTypes.object,
-    cart: PropTypes.object
+    cart: PropTypes.object,
   }
 
   constructor(props, context) {
@@ -148,7 +147,7 @@ class Cart extends Component {
   }
 
   render() {
-    const { position, isOver, canDrop, connectDropTarget } = this.props
+    const { position, isOver, canDrop, connectDropTarget, useDnd } = this.props
 
     const Container = this.props.containerComponent
 
@@ -157,32 +156,39 @@ class Cart extends Component {
     const cartContextValue = this.context.cartContextManager.getCartContextValue()
     const actions = cartContextValue.actions
     const store = cartContextValue.store
+    let template = null
 
     if (store !== null && store.isEmpty()) {
-      return connectDropTarget(<div className='dnd-target-wrapper'>
-        <div
-          className={'padding-top ' + classNames({ 'well-is-over': isOver })}
-          style={{ marginBottom: '.5em' }}
-          bssize='large'>
-          <p style={{
-            textAlign: 'center',
-            maxWidth: 'auto'
-          }}>{this.props.cartEmptyMessage}</p>
+      template = (
+        <div className='dnd-target-wrapper'>
+          <div
+            className={'padding-top ' + classNames({ 'well-is-over': isOver })}
+            style={{ marginBottom: '.5em' }}
+            bssize='large'>
+            <p style={{
+              textAlign: 'center',
+              maxWidth: 'auto'
+            }}>{this.props.cartEmptyMessage}</p>
+          </div>
         </div>
-      </div>)
+      )
     } else {
-      return connectDropTarget(<div className='dnd-target-wrapper'>
-        <Container
-          tableClassName={this.props.tableClassName}
-          columns={this.props.columns}
-          selection={this.state.selection}
-          rowComponent={this.props.rowComponent}
-          removeItem={this.removeItem}
-          setItemQty={this.updateQuantity}
-          context={context}
-        />
-      </div>)
+      template = (
+        <div className='dnd-target-wrapper'>
+          <Container
+            tableClassName={this.props.tableClassName}
+            columns={this.props.columns}
+            selection={this.state.selection}
+            rowComponent={this.props.rowComponent}
+            removeItem={this.removeItem}
+            setItemQty={this.updateQuantity}
+            context={context}
+          />
+        </div>
+      )
     }
+
+    return (typeof connectDropTarget === 'function') ? connectDropTarget(template) : template
   }
 }
 

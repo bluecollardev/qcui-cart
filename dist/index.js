@@ -8408,6 +8408,7 @@ var Cart = (_dec = Y(function (deps) {
       var cartContextValue = this.context.cartContextManager.getCartContextValue();
       var actions = cartContextValue.actions;
       var store = cartContextValue.store;
+      var selection = store.getSelection();
       var template = null;
 
       if (store !== null && store.isEmpty()) {
@@ -8437,7 +8438,7 @@ var Cart = (_dec = Y(function (deps) {
           React__default.createElement(Container, {
             tableClassName: this.props.tableClassName,
             columns: this.props.columns,
-            selection: this.state.selection,
+            selection: selection,
             rowComponent: this.props.rowComponent,
             removeItem: this.removeItem,
             setItemQty: this.updateQuantity,

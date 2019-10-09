@@ -155,9 +155,11 @@ class Cart extends Component {
 
     let context = this.props.iterator()
 
-    const cartContextValue = this.context.cartContextManager.getCartContextValue()
-    const actions = cartContextValue.actions
-    const store = cartContextValue.store
+    const { cartContextManager } = this.context
+    const { contextValue } = cartContextManager.getCartContextValue()
+    const { actions, store } = contextValue
+    const selection = store.getSelection()
+
     let template = null
 
     if (store !== null && store.isEmpty()) {
@@ -180,7 +182,7 @@ class Cart extends Component {
           <Container
             tableClassName={this.props.tableClassName}
             columns={this.props.columns}
-            selection={this.state.selection}
+            selection={selection}
             rowComponent={this.props.rowComponent}
             removeItem={this.removeItem}
             setItemQty={this.updateQuantity}

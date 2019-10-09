@@ -8308,15 +8308,15 @@ var Cart = (_dec = Y(function (deps) {
   createClass(Cart, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
       // Cart.componentDidMount
       // this.context.actions.init(this.props.items, this.context.store.getSelection())
       this.context.cartContextManager.subscribe(function (contextValue) {
         console.log('update cart using context');
         console.log(contextValue);
-        _this2.setState({ selection: contextValue.store.getSelection() });
+        // this.setState({selection: this.context.cartContextManager.getCartContextValue().store.getSelection()})
       });
+
+      // this.setState({selection: contextValue.store.getSelection()})
     }
   }, {
     key: 'refresh',

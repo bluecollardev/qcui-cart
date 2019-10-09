@@ -86,8 +86,10 @@ class Cart extends Component {
     this.context.cartContextManager.subscribe((contextValue) => {
       console.log('update cart using context')
       console.log(contextValue)
-      this.setState({selection: contextValue.store.getSelection()})
+      // this.setState({selection: this.context.cartContextManager.getCartContextValue().store.getSelection()})
     })
+
+    // this.setState({selection: contextValue.store.getSelection()})
   }
 
   refresh() {

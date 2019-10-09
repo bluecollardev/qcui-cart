@@ -10,6 +10,8 @@ let cartContextManager = null
 let wrapper = null
 let contextComponent = null
 
+const PREFIX = 'CONTEXT:'
+
 class MockComponent extends Component {
   render() {
     return (
@@ -22,7 +24,7 @@ class MockComponent extends Component {
 
 const MockCartComponent = CartContext(MockComponent)
 
-describe('Test Context', () => {
+test(`${PREFIX}the user can import the context`, () => {
   beforeEach(() => {
     const props = {}
     wrapper = mount(
@@ -36,14 +38,14 @@ describe('Test Context', () => {
     contextComponent = wrapper.instance()
   })
 
-  test('test createCartContextManager', () => {
+  test('test createCartContextManager', async (done) => {
     cartContextManager = createCartContextManager()
     expect(cartContextManager).toBeTruthy()
   })
 
   test('test CartContext', () => {
     expect(contextComponent).toBeTruthy()
-    expect(wrapper.type().name).toBe('CartContext')
+    expect(wrapper.type().name).toBeDefined()
   })
 
   test('test that invoking itemClicked with an invalid item throws an error', () => {
@@ -97,7 +99,7 @@ describe('Test Context', () => {
   })
 
   test('test that cart items are being tracked correctly', () => {
-    expect(true).toBe(true)
+    it('should return the cart item')
   })
 
   test('test addToCartClicked', () => {
